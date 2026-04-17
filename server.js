@@ -280,14 +280,14 @@ app.get("/mybookings/:userId", async (req, res) => {
             as: "hotelDetails",
           },
         },
-      {
-  $lookup: {
-    from: "rooms",
-    localField: "roomId",
-    foreignField: "roomId",
-    as: "roomDetails",
-  },
-},
+        {
+          $lookup: {
+            from: "rooms",
+            localField: "roomId",
+            foreignField: "roomId",
+            as: "roomDetails",
+          },
+        },
 
       ])
       .toArray();
@@ -412,7 +412,7 @@ app.delete("/feedback/:id", async (req, res) => {
 
 // POST /feedback
 
- 
+
 // ==============================
 // ❌ CANCEL BOOKING (within 24 hours)
 // ==============================
@@ -463,9 +463,9 @@ app.put("/cancel-booking/:bookingId", async (req, res) => {
 app.get("/hotel/:id", async (req, res) => {
   try {
     const roomId = req.params.id; // room _id from frontend
-   const room =
-  (await db.collection("rooms").findOne({ roomId: Number(roomId) })) ||
-  (await db.collection("rooms").findOne({ _id: new ObjectId(roomId) }));
+    const room =
+      (await db.collection("rooms").findOne({ roomId: Number(roomId) })) ||
+      (await db.collection("rooms").findOne({ _id: new ObjectId(roomId) }));
 
 
     if (!room) {
@@ -684,8 +684,8 @@ app.get("/owner-bookings/:email", async (req, res) => {
         paymentStatus: bill?.paymentStatus || "Pending",
       };
     });
-// just before res.json({ success: true, bookings: detailedBookings });
-console.log("🧾 owner-bookings response sample:", detailedBookings.slice(0, 10));
+    // just before res.json({ success: true, bookings: detailedBookings });
+    console.log("🧾 owner-bookings response sample:", detailedBookings.slice(0, 10));
 
     console.log("✅ Owner bookings fetched:", detailedBookings.length);
     res.json({ success: true, bookings: detailedBookings });
@@ -1008,8 +1008,8 @@ app.post("/add-hotel", async (req, res) => {
         typeof amenities === "string"
           ? amenities.split(",").map((a) => a.trim())
           : Array.isArray(amenities)
-          ? amenities
-          : [],
+            ? amenities
+            : [],
       owner: {
         name: owner.name || "Unknown",
         email: owner.email || "unknown@example.com",
@@ -1041,7 +1041,7 @@ app.post("/add-hotel", async (req, res) => {
     });
   }
 
-}); 
+});
 
 // ✅ Delete hotel (works with _id or hotelid)
 app.delete("/delete-hotel/:id", async (req, res) => {
@@ -1279,7 +1279,9 @@ app.get("/user-bookings/:id", async (req, res) => {
 });
 
 
-
+app.get("/", (req, res) => {
+  res.send("Backend is running 🚀");
+});
 // ==============================
 // 🌐 START SERVER (MUST BE LAST)
 // ==============================
